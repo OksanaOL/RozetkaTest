@@ -33,9 +33,12 @@ public class AppTest {
         WebElement buyElementButton = browser.findElement(By.xpath("//*[@class=\"product__buy\"]/*/button"));
         buyElementButton.click();
 
-        browser.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        browser.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         WebElement closeButtonClick = browser.findElement(By.xpath("//*[@classmodalcontent=\"cart-modal\"]/*/div/*/button"));
         closeButtonClick.click();
 
+
+
+        git ignore
     }
 }
