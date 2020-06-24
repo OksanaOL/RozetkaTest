@@ -1,28 +1,39 @@
 package org.example;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
 
 public class AppTest {
-    @Test
-    public void RozetkaTest() {
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("incognito");
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+    WebDriver browser;
+
+    @BeforeTest
+    public void preCondition() {
         System.setProperty("webdriver.chrome.driver", "d:\\Downloads\\chromedriver_win32\\chromedriver.exe");
-        WebDriver browser = new ChromeDriver(capabilities);
+        WebDriver browser = new ChromeDriver();
         browser.get("https://www.rozetka.com.ua/");
 
+    }
+
+    @AfterTest
+    public void postCondition() {
+        browser.close();
+
+    }
+
+
+    @Test
+    public void searchGoods() {
         WebElement searchField = browser.findElement(By.xpath("//*[@name=\"search\"]"));
         searchField.sendKeys("Навушники Xiaomi AirDots/Earbuds Basic TWS (TWSEJ04LS)");
 
@@ -38,7 +49,19 @@ public class AppTest {
         closeButtonClick.click();
 
 
+    }
 
-        git ignore
+    @Test
+    public void checkPrice() {
+
+        WebElement searchField = browser.findElement(By.xpath("//*[@name='search']"));
+        searchField.sendKeys("Мобільний телефон");
+
+        WebElement searchButton = browser.findElement(By.xpath("//*[@role='search']/form/button"));
+        searchButton.click();
+
+        WebElement isPriceInGrivna = browser.findElement(By.xpath("//*[@class='goods-tile__price-currency']"));
+        Assert.assertTrue(isPriceInGrivna.getText().contains("₴"));
+
     }
 }
