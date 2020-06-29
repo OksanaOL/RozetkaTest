@@ -1,44 +1,60 @@
 package org.example;
 
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 
 public class AppTest {
-    @Test
-    public void RozetkaTest() {
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("incognito");
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+    WebDriver browser;
+
+    @BeforeTest
+    public void preCondition() {
+
         System.setProperty("webdriver.chrome.driver", "d:\\Downloads\\chromedriver_win32\\chromedriver.exe");
-        WebDriver browser = new ChromeDriver(capabilities);
+        browser = new ChromeDriver();
         browser.get("https://www.rozetka.com.ua/");
+        // browser.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
-        WebElement searchField = browser.findElement(By.xpath("//*[@name=\"search\"]"));
-        searchField.sendKeys("Навушники Xiaomi AirDots/Earbuds Basic TWS (TWSEJ04LS)");
+    }
 
-        WebElement searchButton = browser.findElement(By.xpath("//*[@role=\"search\"]/form/button"));
-        searchButton.click();
+    @AfterTest
+    public void postCondition() {
+        browser.close();
 
-        browser.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
-        WebElement buyElementButton = browser.findElement(By.xpath("//*[@class=\"product__buy\"]/*/button"));
-        buyElementButton.click();
-
-        browser.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        WebElement closeButtonClick = browser.findElement(By.xpath("//*[@classmodalcontent=\"cart-modal\"]/*/div/*/button"));
-        closeButtonClick.click();
+    }
 
 
+    @Test
+    public void searchGoods() {
+        SearchProducts searchProducts = new SearchProducts(browser);
+        searchProducts.fillInSearchField("Навушники Xiaomi AirDots/Earbuds Basic TWS (TWSEJ04LS)")
+                .pressSearchButton()
+                .pressBuyButton()
+                .closeWindow();
 
-        git ignore
+
+    }
+
+    @Test
+    public void checkPrice() {
+        SearchProducts searchProducts = new SearchProducts(browser);
+        String actualCurrencyValue = searchProducts.CurrencyValue();
+        String expectedCurrencyValue = "₴";
+        Assert.assertTrue(actualCurrencyValue.contains(expectedCurrencyValue));
+
     }
 }
