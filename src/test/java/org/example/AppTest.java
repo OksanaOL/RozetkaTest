@@ -24,19 +24,16 @@ public class AppTest {
     @BeforeTest
     public void preCondition() {
 
-        System.setProperty("webdriver.chrome.driver", "d:\\Downloads\\chromedriver_win32\\chromedriver.exe");
+//        System.setProperty("webdriver.chrome.driver", "d:\\Downloads\\chromedriver_win32\\chromedriver.exe");
         browser = new ChromeDriver();
         browser.get("https://www.rozetka.com.ua/");
-        // browser.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
+        browser.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @AfterTest
     public void postCondition() {
         browser.close();
-
     }
-
 
     @Test
     public void searchGoods() {
@@ -45,16 +42,12 @@ public class AppTest {
                 .pressSearchButton()
                 .pressBuyButton()
                 .closeWindow();
-
-
     }
 
     @Test
-    public void checkPrice() {
+    public void checkAllPricesAreInGrivna() {
         SearchProducts searchProducts = new SearchProducts(browser);
-        String actualCurrencyValue = searchProducts.CurrencyValue();
-        String expectedCurrencyValue = "₴";
-        Assert.assertTrue(actualCurrencyValue.contains(expectedCurrencyValue));
-
+        String expectedCurrencySymbol = "₴";
+        Assert.assertTrue(searchProducts.isAllPricesInSpecifiedCurrency(expectedCurrencySymbol));
     }
 }
