@@ -23,6 +23,5 @@ public class AppTest {
         CurrencySymbolCheck currencySymbolCheck = new CurrencySymbolCheck(browser);
         String expectedcurrencySymbol = "₴";
         Assert.assertTrue(currencySymbolCheck.isPriceCorrect(expectedcurrencySymbol));
-
     }
 }
