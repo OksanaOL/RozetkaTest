@@ -2,19 +2,23 @@ package org.example;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import static org.example.PreConditions.initDriver;
+
 public class AppTest {
     WebDriver browser;
-    private final String rozetkaUrl = "https://www.rozetka.com.ua/";
+    private String baseURI = System.getenv("baseURI");
 
     @BeforeTest
     public void startWebPage() {
-        browser = new ChromeDriver();
+        if(baseURI == null) {
+            baseURI = "https://www.rozetka.com.ua/";
+        }
+        browser = initDriver();
         PreConditions preConditions = new PreConditions(browser);
-        preConditions.openPage(rozetkaUrl)
+        preConditions.openPage(baseURI)
                 .scrollPage();
     }
 
