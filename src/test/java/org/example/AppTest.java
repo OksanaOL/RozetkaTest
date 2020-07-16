@@ -2,14 +2,8 @@ package org.example;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 
 public class AppTest {
     WebDriver browser;
@@ -34,7 +28,8 @@ public class AppTest {
                 .clickBuyButton()
                 .openPopup()
                 .increaseAmount()
-                .closePopup();
+                .closePopup()
+                .hoverMouseToShowMinicart();
     }
 
     @Test

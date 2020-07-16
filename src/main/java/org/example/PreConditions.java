@@ -20,7 +20,6 @@ public class PreConditions {
     public static WebDriver initWebDriver(){
         WebDriverManager.chromedriver().version("83.0.4103.39").setup();
         return new ChromeDriver();
-
     }
 
     public PreConditions scrollPage() {
