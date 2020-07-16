@@ -25,6 +25,7 @@ public class AppTest {
         preConditions.openPage(baseURI)
                 .scrollPage();
     }
+
     @Test
     public void searchGoods() {
         CurrencySymbolCheck currencySymbolCheck = new CurrencySymbolCheck(this.browser);
