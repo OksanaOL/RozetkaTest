@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class PreConditions {
     private WebDriver driver;
 
+
     public PreConditions(WebDriver driver) {
         this.driver = driver;
     }
@@ -17,10 +18,11 @@ public class PreConditions {
         return this;
     }
 
-    public static WebDriver initWebDriver(){
+    public static WebDriver initWebDriver() {
         WebDriverManager.chromedriver().version("83.0.4103.39").setup();
         return new ChromeDriver();
     }
+
 
     public PreConditions scrollPage() {
         JavascriptExecutor js = (JavascriptExecutor) driver;

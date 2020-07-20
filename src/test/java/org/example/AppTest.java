@@ -12,7 +12,7 @@ public class AppTest {
     @BeforeTest
     public void startWebPage() {
         if (baseURI == null) {
-            baseURI = "https://google.com.ua";
+            baseURI = "https://rozetka.com.ua";
         }
         browser = PreConditions.initWebDriver();
         PreConditions preConditions = new PreConditions(browser);
@@ -21,22 +21,27 @@ public class AppTest {
     }
 
     @Test
-    public void searchGoods() {
-        CurrencySymbolCheck currencySymbolCheck = new CurrencySymbolCheck(this.browser);
-        currencySymbolCheck.typeToSearchField("Навушники Xiaomi AirDots/Earbuds Basic TWS (TWSEJ04LS)")
+    public void searchProduct() throws InterruptedException {
+        ProductSearch productSearch = new ProductSearch(this.browser);
+        CartPopup cartPopup = new CartPopup(this.browser);
+        productSearch.typeToSearchField("Навушники Xiaomi AirDots/Earbuds Basic")
                 .clickSearchButton()
-                .clickBuyButton()
-                .openPopup()
-                .increaseAmount()
-                .closePopup()
-                .hoverMouseToShowMinicart();
+                .clickBuyButton();
+        cartPopup.openPopup();
+        Thread.sleep(3000);
+        int inititalPrice = cartPopup.totalPrice();
+        cartPopup.increaseAmount();
+        Thread.sleep(3000);
+        int finalPrice = cartPopup.totalPrice();
+        Assert.assertEquals(inititalPrice * cartPopup.PRODUCT_QUANTITY, finalPrice);
+        cartPopup.closePopup();
     }
 
     @Test
     public void checkPrice() {
-        CurrencySymbolCheck currencySymbolCheck = new CurrencySymbolCheck(this.browser);
+        ProductSearch productSearch = new ProductSearch(this.browser);
         String expectedcurrencySymbol = "₴";
-        Assert.assertTrue(currencySymbolCheck.isPriceCorrect(expectedcurrencySymbol));
+        Assert.assertTrue(productSearch.isPriceCorrect(expectedcurrencySymbol));
     }
 }
 
