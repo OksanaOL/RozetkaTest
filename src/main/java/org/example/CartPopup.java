@@ -27,29 +27,16 @@ public class CartPopup {
         } catch (InterruptedException var2) {
             var2.printStackTrace();
         }
-
         for (int i = 0; i < PRODUCT_QUANTITY - 1; ++i) {
             this.driver.findElement(this.plusButton).click();
         }
-
-
         return this;
     }
 
     public int totalPrice() {
         String text = this.driver.findElement(this.productPrice).getText();
-        String result = "";
-        String[] text1 = text.split(" ");
-        for (String element : text1
-        ) {
-            Integer intElement = TryParseInt(element);
-            if (intElement != null) {
-                result +=element;
-            }
-        }
-
-        int price = Integer.parseInt(result);
-
+        text = text.replaceAll("[^\\d]", "");
+        int price = Integer.parseInt(text);
         return price;
     }
 
