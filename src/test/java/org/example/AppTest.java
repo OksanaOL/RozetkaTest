@@ -2,6 +2,7 @@ package org.example;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -18,6 +19,11 @@ public class AppTest {
         PreConditions preConditions = new PreConditions(browser);
         preConditions.openPage(baseURI)
                 .scrollPage();
+    }
+    @AfterTest
+    public void closeWebPage(){
+        PostCondition postCondition= new PostCondition(browser);
+        postCondition.closeBrowser();
     }
 
     @Test
