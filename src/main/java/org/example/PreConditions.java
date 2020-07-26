@@ -5,12 +5,22 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.util.concurrent.TimeUnit;
+
 public class PreConditions {
     private WebDriver driver;
 
 
     public PreConditions(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public PreConditions() {
+        this.driver = initWebDriver();
+    }
+
+    public WebDriver getDriver() {
+        return this.driver;
     }
 
     public PreConditions openPage(String url) {
@@ -20,7 +30,10 @@ public class PreConditions {
 
     public static WebDriver initWebDriver() {
         WebDriverManager.chromedriver().version("83.0.4103.39").setup();
-        return new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
+        return driver;
     }
 
 
