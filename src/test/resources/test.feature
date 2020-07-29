@@ -3,6 +3,9 @@ Feature: Search product
   As private person
   I want easy find and buy it using online shop
 
+  Background:
+    Given Start browser
+
   Scenario Outline: Search result should show item
     Given Open Rozetka home page
     When Enter product "<title>" in search field

@@ -8,18 +8,23 @@ import org.example.ProductSearch;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-public class Test {
+public class Steps {
     WebDriver driver;
     PreConditions preConditions;
     ProductSearch productSearch;
     CartPopup cartPopup;
 
-    @Given("Open Rozetka home page")
-    public void open_rozetka_home_page() {
+    @Given("Start browser")
+    public void startBrowser() {
         driver = PreConditions.initWebDriver();
         preConditions = new PreConditions(driver);
         productSearch = new ProductSearch(driver);
         cartPopup = new CartPopup(driver);
+
+    }
+
+    @Given("Open Rozetka home page")
+    public void open_rozetka_home_page() {
         preConditions.openPage("https://www.rozetka.com.ua/");
     }
 
@@ -35,10 +40,6 @@ public class Test {
 
     @Given("Rozetka site is opened")
     public void rozetka_site_is_opened() {
-        driver = PreConditions.initWebDriver();
-        preConditions = new PreConditions(driver);
-        productSearch = new ProductSearch(driver);
-        cartPopup = new CartPopup(driver);
         preConditions.openPage("https://www.rozetka.com.ua/");
     }
 
@@ -56,10 +57,6 @@ public class Test {
 
     @Given("Requested product is shown and buy button is pressed")
     public void requestedProductIsShownAndBuyButtonIsPressed() {
-        driver = PreConditions.initWebDriver();
-        preConditions = new PreConditions(driver);
-        productSearch = new ProductSearch(driver);
-        cartPopup = new CartPopup(driver);
         preConditions.openPage("https://www.rozetka.com.ua/");
         productSearch.typeToSearchField("Навушники Xiaomi AirDots/Earbuds Basic ")
                 .clickSearchButton()
@@ -71,7 +68,7 @@ public class Test {
         cartPopup.openPopup();
     }
 
-    @And("Plus button is pressed - total price is changed")
+    @When("Plus button is pressed - total price is changed")
     public void plusButtonIsPressedTotalPriceIsChanged() throws InterruptedException {
         Thread.sleep(3000);
         int inititalPrice = cartPopup.totalPrice();
@@ -86,4 +83,5 @@ public class Test {
     public void productCartIsClosed() {
         cartPopup.closePopup();
     }
+
 }
