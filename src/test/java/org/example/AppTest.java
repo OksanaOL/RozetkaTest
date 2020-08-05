@@ -1,45 +1,30 @@
+
+
 package org.example;
 
-import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.junit.Test;
+
+import java.lang.reflect.Type;
+import java.util.List;
+
 
 public class AppTest {
-    WebDriver browser;
-    private String baseURI = System.getenv("baseURI");
 
-    @BeforeTest
-    public void startWebPage() {
-        if (baseURI == null) {
-            baseURI = "https://google.com.ua";
-        }
-        browser = PreConditions.initWebDriver();
-        PreConditions preConditions = new PreConditions(browser);
-        preConditions.openPage(baseURI)
-                .scrollPage();
-    }
 
     @Test
-    public void searchGoods() {
-        CurrencySymbolCheck currencySymbolCheck = new CurrencySymbolCheck(this.browser);
-        currencySymbolCheck.typeToSearchField("Навушники Xiaomi AirDots/Earbuds Basic TWS (TWSEJ04LS)")
-                .clickSearchButton()
-                .clickBuyButton()
-                .openPopup()
-                .increaseAmount()
-                .closePopup()
-                .hoverMouseToShowMinicart();
-    }
+    public void timeZoneTest() {
+        RestAssured.baseURI = "https://jsonplaceholder.typicode.com/";
+        Response response = RestAssured.given()
+                .when()
+                .get("/users");
 
-    @Test
-    public void checkPrice() {
-        CurrencySymbolCheck currencySymbolCheck = new CurrencySymbolCheck(this.browser);
-        String expectedcurrencySymbol = "₴";
-        Assert.assertTrue(currencySymbolCheck.isPriceCorrect(expectedcurrencySymbol));
+        Type listType = new TypeToken<List<Users>>() {
+        }.getType();
+        List<Users> receivedUsers = new Gson().fromJson(response.asString(), listType);
+
     }
 }
-
-
-
-
