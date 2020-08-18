@@ -2,14 +2,13 @@ package org.example;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 public class AppTest {
     WebDriver browser;
     private String baseURI = System.getenv("baseURI");
 
-    @BeforeTest
+    @BeforeMethod
     public void startWebPage() {
         if (baseURI == null) {
             baseURI = "https://rozetka.com.ua";
@@ -18,6 +17,11 @@ public class AppTest {
         PreConditions preConditions = new PreConditions(browser);
         preConditions.openPage(baseURI)
                 .scrollPage();
+    }
+    @AfterMethod
+    public void closeWebPage(){
+        PostCondition postCondition= new PostCondition(browser);
+        postCondition.closeBrowser();
     }
 
     @Test
@@ -42,6 +46,13 @@ public class AppTest {
         ProductSearch productSearch = new ProductSearch(this.browser);
         String expectedcurrencySymbol = "₴";
         Assert.assertTrue(productSearch.isPriceCorrect(expectedcurrencySymbol));
+    }
+    @Test
+    public void searchProduct1() throws InterruptedException {
+        ProductSearch productSearch = new ProductSearch(this.browser);
+        CartPopup cartPopup = new CartPopup(this.browser);
+        productSearch.typeToSearchField("Samsung Galaxy M31 6/128GB Blue")
+                .clickSearchButton();
     }
 }
 
